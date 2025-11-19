@@ -1,0 +1,81 @@
+import React from 'react';
+import { calculatePositions, getLabelPosition, CircleItem } from '../utils/CircleUtils';
+
+interface CircleDiagramProps {
+  items: CircleItem[];
+}
+
+const CircleDiagram: React.FC<CircleDiagramProps> = ({ items }) => {
+  const CANVAS_WIDTH = 1920;
+  const CANVAS_HEIGHT = 1080;
+  const CENTER_X = CANVAS_WIDTH / 2;
+  const CENTER_Y = CANVAS_HEIGHT / 2;
+  
+  const LARGE_CIRCLE_RADIUS = 350;
+  
+  const SMALL_CIRCLE_RADIUS = LARGE_CIRCLE_RADIUS / 4;
+  
+  const positions = calculatePositions(items, CENTER_X, CENTER_Y, LARGE_CIRCLE_RADIUS);
+  
+  return (
+    <svg
+      width={CANVAS_WIDTH}
+      height={CANVAS_HEIGHT}
+      viewBox={`0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`}
+      style={{ border: '1px solid #ccc', backgroundColor: '#f9f9f9' }}
+    >
+      <circle
+        cx={CENTER_X}
+        cy={CENTER_Y}
+        r={LARGE_CIRCLE_RADIUS}
+        fill="none"
+        stroke="#333"
+        strokeWidth="3"
+      />
+      
+      {positions.map((pos, index) => {
+        const item = items[index];
+        const labelPos = getLabelPosition(pos.angle, pos.x, pos.y, SMALL_CIRCLE_RADIUS);
+        
+        return (
+          <g key={pos.number}>
+            <circle
+              cx={pos.x}
+              cy={pos.y}
+              r={SMALL_CIRCLE_RADIUS}
+              fill="#fff"
+              stroke="#333"
+              strokeWidth="2"
+            />
+            
+            <text
+              x={pos.x}
+              y={pos.y}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize="24"
+              fontWeight="bold"
+              fill="#333"
+            >
+              {pos.number}
+            </text>
+            
+            <text
+              x={labelPos.x}
+              y={labelPos.y}
+              textAnchor={labelPos.textAnchor}
+              dominantBaseline="central"
+              fontSize="18"
+              fill="#333"
+            >
+              {item.label}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+};
+
+export default CircleDiagram;
+
