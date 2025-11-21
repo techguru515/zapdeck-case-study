@@ -51,7 +51,7 @@ export const getLabelPosition = (
 ) => {
   const isRightSide = (angle >= 270 && angle < 360) || (angle >= 0 && angle < 90);
   
-  const labelOffset = smallCircleRadius + 20;
+  const labelOffset = smallCircleRadius + 40;
   
   if (isRightSide) {
     return {

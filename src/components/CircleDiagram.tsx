@@ -30,7 +30,7 @@ const CircleDiagram: React.FC<CircleDiagramProps> = ({ items }) => {
         r={LARGE_CIRCLE_RADIUS}
         fill="none"
         stroke="#333"
-        strokeWidth="3"
+        strokeWidth="6"
       />
       
       {positions.map((pos, index) => {
@@ -43,9 +43,9 @@ const CircleDiagram: React.FC<CircleDiagramProps> = ({ items }) => {
               cx={pos.x}
               cy={pos.y}
               r={SMALL_CIRCLE_RADIUS}
-              fill="#fff"
-              stroke="#333"
-              strokeWidth="2"
+              fill="#4587ddff"
+              stroke="#4587ddff"
+              strokeWidth="6"
             />
             
             <text
@@ -53,9 +53,9 @@ const CircleDiagram: React.FC<CircleDiagramProps> = ({ items }) => {
               y={pos.y}
               textAnchor="middle"
               dominantBaseline="central"
-              fontSize="24"
+              fontSize="48"
               fontWeight="bold"
-              fill="#333"
+              fill="#fff"
             >
               {pos.number}
             </text>
@@ -65,7 +65,7 @@ const CircleDiagram: React.FC<CircleDiagramProps> = ({ items }) => {
               y={labelPos.y}
               textAnchor={labelPos.textAnchor}
               dominantBaseline="central"
-              fontSize="18"
+              fontSize="36"
               fill="#333"
             >
               {item.label}
