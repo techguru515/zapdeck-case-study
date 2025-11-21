@@ -25,6 +25,7 @@ The small circles are positioned using polar coordinate mathematics:
 2. **Starting Position**: Circles are numbered starting from the top (12 o'clock position), which corresponds to -90° in standard mathematical coordinates (or 270° in 0-360° range)
 
 3. **Position Calculation**: For each circle at index `i`:
+
    - Angle: `θ = -π/2 + i × (2π/n)`
    - X coordinate: `x = centerX + radius × cos(θ)`
    - Y coordinate: `y = centerY + radius × sin(θ)`
@@ -34,6 +35,7 @@ The small circles are positioned using polar coordinate mathematics:
 ### Numbering
 
 Circles are numbered clockwise starting from the top position:
+
 - Circle at top (12 o'clock) = 1
 - Next circle clockwise = 2
 - And so on...
@@ -43,12 +45,14 @@ Circles are numbered clockwise starting from the top position:
 The text labels follow a consistent rule based on the circle's angular position:
 
 ### Right Side (270° to 90°)
+
 - **Position**: Label is placed to the **right** of the circle
 - **Alignment**: **Left-aligned** text (`textAnchor="start"`)
 - **Offset**: 20 pixels from the circle edge
 - **Angles**: Includes 270° (top) through 90° (bottom), wrapping around 0°/360°
 
 ### Left Side (90° to 270°)
+
 - **Position**: Label is placed to the **left** of the circle
 - **Alignment**: **Right-aligned** text (`textAnchor="end"`)
 - **Offset**: 20 pixels from the circle edge
@@ -56,14 +60,15 @@ The text labels follow a consistent rule based on the circle's angular position:
 
 ### Implementation Details
 
-The label positioning logic in `CircleUtils.ts`:
+The label positioning logic in `labelPlacement.ts`:
+
 1. Converts the circle's angle to degrees (normalized to 0-360° range)
 2. Determines if the angle falls in the right side or left side:
    - Right side: `(angle >= 270 && angle < 360) || (angle >= 0 && angle < 90)`
    - Left side: `angle >= 90 && angle < 270`
 3. Calculates label position:
-   - Right side: `x = circleX + (smallCircleRadius + 20)`
-   - Left side: `x = circleX - (smallCircleRadius + 20)`
+   - Right side: `x = circleX + (smallCircleRadius + 40)`
+   - Left side: `x = circleX - (smallCircleRadius + 40)`
 4. Sets text anchor accordingly:
    - Right side: `textAnchor="start"` (left-aligned)
    - Left side: `textAnchor="end"` (right-aligned)
@@ -71,6 +76,7 @@ The label positioning logic in `CircleUtils.ts`:
 ## Technical Implementation
 
 ### Technology Stack
+
 - **React 19.2.0**: UI framework
 - **TypeScript 4.9.5**: Type safety
 - **SVG**: All shapes rendered using SVG elements
@@ -88,8 +94,9 @@ circle-diagram/
 │   │   ├── Dashboard.tsx          # Main application page with selector
 │   │   └── Dashboard.css          # Dashboard styling
 │   ├── utils/
-│   │   ├── CircleUtils.ts         # Position calculation and label positioning logic
-│   │   └── Circles.ts             # Predefined circle set data
+│   │   ├── geometry.ts            # Position calculation logic
+│   │   ├── labelPlacement.ts      # Label positioning logic
+│   │   └── circles.ts             # Predefined circle set data
 │   ├── index.tsx                  # Application entry point
 │   └── index.css                  # Global styles
 ├── public/                        # Static assets
@@ -99,22 +106,29 @@ circle-diagram/
 
 ### Component Architecture
 
-1. **`CircleDiagram.tsx`**: 
+1. **`CircleDiagram.tsx`**:
+
    - Main component that renders the SVG diagram
    - Accepts an array of `CircleItem` objects as props
    - Handles all rendering logic for circles, numbers, and labels
 
-2. **`Dashboard.tsx`**: 
+2. **`Dashboard.tsx`**:
+
    - Main application page with interactive dropdown selector
    - Displays current circle set information
    - Manages state for selected circle configuration
 
-3. **`CircleUtils.ts`**: 
+3. **`geometry.ts`**:
+
    - `calculatePositions()`: Computes the position and angle for each small circle
-   - `getLabelPosition()`: Determines label position and alignment based on circle angle
    - TypeScript interfaces: `CirclePosition`, `CircleItem`
 
-4. **`Circles.ts`**: 
+4. **`labelPlacement.ts`**:
+
+   - `getLabelPosition()`: Determines label position and alignment based on circle angle
+   - TypeScript interface: `LabelPosition`
+
+5. **`circles.ts`**:
    - Predefined circle set data
    - Contains 8 different configurations (2-9 circles)
    - Each set includes a name and array of items with id and label
@@ -137,16 +151,19 @@ Users can switch between configurations using the dropdown selector in the Dashb
 ## Running the Application
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - npm or yarn
 
 ### Installation
+
 ```bash
 cd circle-diagram
 npm install
 ```
 
 ### Development Server
+
 ```bash
 npm start
 ```
@@ -154,6 +171,7 @@ npm start
 The application will open at `http://localhost:3000` in your default browser.
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
@@ -161,6 +179,7 @@ npm run build
 This creates an optimized production build in the `build` folder.
 
 ### Running Tests
+
 ```bash
 npm test
 ```
@@ -169,7 +188,7 @@ npm test
 
 1. **Large Circle Radius (350px)**: Chosen to balance visual prominence with label space. This provides ~220px margin on each side for labels.
 
-2. **Label Offset (20px)**: Provides visual separation between circles and labels without excessive spacing.
+2. **Label Offset (40px)**: Provides visual separation between circles and labels without excessive spacing.
 
 3. **Starting Position (Top)**: Starting from the top (12 o'clock) provides a natural reading flow and is intuitive for users.
 
@@ -184,6 +203,7 @@ npm test
 ## Limitations and Future Enhancements
 
 ### Current Limitations
+
 - **No Dynamic Scaling**: Canvas size is fixed at 1920×1080 as per requirements
 - **No Collision Avoidance**: Labels may overlap with very long text
 - **No Interactivity**: No hover effects or click handlers (as per requirements)
@@ -191,6 +211,7 @@ npm test
 - **Maximum Circles**: Supports 2-9 circles as per requirements
 
 ### Potential Enhancements for Production Use
+
 - Collision detection and label repositioning
 - Dynamic font sizing based on available space
 - Support for more than 9 circles
@@ -203,6 +224,7 @@ npm test
 ## Testing
 
 The implementation has been tested with:
+
 - All 8 predefined circle sets (2 to 9 circles)
 - Various label lengths (short, medium, long, mixed)
 - Different combinations of label lengths

@@ -1,4 +1,4 @@
-import { CircleItem } from './CircleUtils';
+import { CircleItem } from './geometry';
 
 export interface CircleSet {
   name: string;

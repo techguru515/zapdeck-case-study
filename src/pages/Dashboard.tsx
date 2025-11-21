@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CircleDiagram from '../components/CircleDiagram';
-import { circles } from '../utils/Circles';
+import { circles } from '../utils/circles';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {

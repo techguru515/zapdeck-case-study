@@ -1,5 +1,6 @@
 import React from 'react';
-import { calculatePositions, getLabelPosition, CircleItem } from '../utils/CircleUtils';
+import { calculatePositions, CircleItem } from '../utils/geometry';
+import { getLabelPosition } from '../utils/labelPlacement';
 
 interface CircleDiagramProps {
   items: CircleItem[];
